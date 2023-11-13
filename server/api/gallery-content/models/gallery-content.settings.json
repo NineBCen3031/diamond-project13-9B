@@ -1,0 +1,13 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gallery_contents",
+  "info": {
+    "name": "Gallery Content"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {}
+}

@@ -7,6 +7,8 @@ import DashboardDisplayCodeModal from './DashboardDisplayCodeModal';
 import MentorSubHeader from '../../components/MentorSubHeader/MentorSubHeader';
 import NavBar from '../../components/NavBar/NavBar';
 import { useNavigate } from 'react-router-dom';
+import '../../ModerationPage'
+
 
 export default function Dashboard() {
   const [classrooms, setClassrooms] = useState([]);
