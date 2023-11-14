@@ -13,6 +13,8 @@ export default function ModerationPage() {
         getData();
     }, []);
 
+
+    //This is an async function due to mentor files functions.
     async function getData() {
         try {
             const userData = await getMentor();
