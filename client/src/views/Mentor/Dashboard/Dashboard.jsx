@@ -62,10 +62,11 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
-        <button onClick={() => navigate('/Moderation')}>
+        <div id = 'moderation-button' >
+          <button onClick={() => navigate('/Moderation')}>
             Moderation
-
-        </button>
+          </button>
+      </div>
       </div>
     </div>
   );
