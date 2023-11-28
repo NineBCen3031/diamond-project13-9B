@@ -657,7 +657,8 @@
       "Student": {
         "required": [
           "id",
-          "enrolled"
+          "enrolled",
+          "muted"
         ],
         "properties": {
           "id": {
@@ -715,6 +716,12 @@
                 }
               },
               "authorized_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contents": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -784,12 +791,60 @@
           "last_logged_in": {
             "type": "string",
             "format": "date-time"
+          },
+          "muted": {
+            "type": "boolean",
+            "default": false
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "moderated": {
+                  "type": "boolean"
+                },
+                "flags": {
+                  "type": "integer"
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "school": {
+                  "type": "string"
+                },
+                "student": {
+                  "type": "string"
+                },
+                "ReportReason": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
       "NewStudent": {
         "required": [
-          "enrolled"
+          "enrolled",
+          "muted"
         ],
         "properties": {
           "name": {
@@ -814,6 +869,16 @@
           "last_logged_in": {
             "type": "string",
             "format": "date-time"
+          },
+          "muted": {
+            "type": "boolean",
+            "default": false
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "created_by": {
             "type": "string"

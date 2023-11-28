@@ -817,6 +817,12 @@
                   "type": "string"
                 }
               },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "created_by": {
                 "type": "string"
               },
@@ -916,7 +922,8 @@
             "items": {
               "required": [
                 "id",
-                "enrolled"
+                "enrolled",
+                "muted"
               ],
               "properties": {
                 "id": {
@@ -942,6 +949,15 @@
                 },
                 "last_logged_in": {
                   "type": "string"
+                },
+                "muted": {
+                  "type": "boolean"
+                },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "created_by": {
                   "type": "string"
@@ -1015,6 +1031,49 @@
                 }
               }
             }
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "moderated": {
+                  "type": "boolean"
+                },
+                "flags": {
+                  "type": "integer"
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "school": {
+                  "type": "string"
+                },
+                "student": {
+                  "type": "string"
+                },
+                "ReportReason": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -1060,6 +1119,12 @@
             }
           },
           "authorized_workspaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contents": {
             "type": "array",
             "items": {
               "type": "string"

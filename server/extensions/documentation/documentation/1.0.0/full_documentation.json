@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "11/09/2023 5:04:05 PM"
+    "x-generation-date": "11/28/2023 8:11:16 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -3247,78 +3247,7 @@
         }
       }
     },
-    "/bug-report": {
-      "post": {
-        "deprecated": false,
-        "description": "Create a new record",
-        "responses": {
-          "200": {
-            "description": "response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "summary": "",
-        "tags": [
-          "Email"
-        ],
-        "requestBody": {
-          "description": "",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "foo": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gallery-contents": {
+    "/contents": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -3328,10 +3257,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Content"
                   }
                 }
               }
@@ -3370,7 +3298,7 @@
         },
         "summary": "",
         "tags": [
-          "Gallery-content"
+          "Content"
         ],
         "parameters": [
           {
@@ -3520,11 +3448,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Content"
                 }
               }
             }
@@ -3562,7 +3486,7 @@
         },
         "summary": "",
         "tags": [
-          "Gallery-content"
+          "Content"
         ],
         "requestBody": {
           "description": "",
@@ -3570,14 +3494,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewGallery-content"
+                "$ref": "#/components/schemas/NewContent"
               }
             }
           }
         }
       }
     },
-    "/gallery-contents/count": {
+    "/contents/count": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -3588,8 +3512,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "foo": {
-                      "type": "string"
+                    "count": {
+                      "type": "integer"
                     }
                   }
                 }
@@ -3629,12 +3553,12 @@
         },
         "summary": "",
         "tags": [
-          "Gallery-content"
+          "Content"
         ],
         "parameters": []
       }
     },
-    "/gallery-contents/{id}": {
+    "/contents/{id}": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -3644,11 +3568,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Content"
                 }
               }
             }
@@ -3686,7 +3606,7 @@
         },
         "summary": "",
         "tags": [
-          "Gallery-content"
+          "Content"
         ],
         "parameters": [
           {
@@ -3710,11 +3630,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Content"
                 }
               }
             }
@@ -3752,7 +3668,7 @@
         },
         "summary": "",
         "tags": [
-          "Gallery-content"
+          "Content"
         ],
         "requestBody": {
           "description": "",
@@ -3760,7 +3676,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewGallery-content"
+                "$ref": "#/components/schemas/NewContent"
               }
             }
           }
@@ -3826,7 +3742,7 @@
         },
         "summary": "",
         "tags": [
-          "Gallery-content"
+          "Content"
         ],
         "parameters": [
           {
@@ -3840,6 +3756,77 @@
             }
           }
         ]
+      }
+    },
+    "/bug-report": {
+      "post": {
+        "deprecated": false,
+        "description": "Create a new record",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Email"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/grades": {
@@ -12686,6 +12673,12 @@
                   "type": "string"
                 }
               },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "created_by": {
                 "type": "string"
               },
@@ -12785,7 +12778,8 @@
             "items": {
               "required": [
                 "id",
-                "enrolled"
+                "enrolled",
+                "muted"
               ],
               "properties": {
                 "id": {
@@ -12811,6 +12805,15 @@
                 },
                 "last_logged_in": {
                   "type": "string"
+                },
+                "muted": {
+                  "type": "boolean"
+                },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "created_by": {
                   "type": "string"
@@ -12884,6 +12887,49 @@
                 }
               }
             }
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "moderated": {
+                  "type": "boolean"
+                },
+                "flags": {
+                  "type": "integer"
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "school": {
+                  "type": "string"
+                },
+                "student": {
+                  "type": "string"
+                },
+                "ReportReason": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -12934,6 +12980,12 @@
               "type": "string"
             }
           },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "created_by": {
             "type": "string"
           },
@@ -12942,12 +12994,180 @@
           }
         }
       },
-      "Gallery-content": {
+      "Content": {
         "required": [
           "id"
         ],
         "properties": {
           "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "moderated": {
+            "type": "boolean"
+          },
+          "flags": {
+            "type": "integer"
+          },
+          "classroom": {
+            "required": [
+              "id",
+              "code"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "school": {
+                "type": "string"
+              },
+              "sessions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mentors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "students": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "code": {
+                "type": "string"
+              },
+              "grade": {
+                "type": "string"
+              },
+              "selections": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "authorized_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
+          "school": {
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "county": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "classrooms": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mentors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
+          "student": {
+            "required": [
+              "id",
+              "enrolled",
+              "muted"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "character": {
+                "type": "string"
+              },
+              "classroom": {
+                "type": "string"
+              },
+              "sessions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "enrolled": {
+                "type": "boolean"
+              },
+              "last_logged_in": {
+                "type": "string"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
+          "ReportReason": {
             "type": "string"
           },
           "published_at": {
@@ -12956,8 +13176,29 @@
           }
         }
       },
-      "NewGallery-content": {
+      "NewContent": {
         "properties": {
+          "description": {
+            "type": "string"
+          },
+          "moderated": {
+            "type": "boolean"
+          },
+          "flags": {
+            "type": "integer"
+          },
+          "classroom": {
+            "type": "string"
+          },
+          "school": {
+            "type": "string"
+          },
+          "student": {
+            "type": "string"
+          },
+          "ReportReason": {
+            "type": "string"
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -13030,6 +13271,12 @@
                   }
                 },
                 "authorized_workspaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "contents": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -13522,6 +13769,12 @@
                   "type": "string"
                 }
               },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "created_by": {
                 "type": "string"
               },
@@ -13578,6 +13831,12 @@
                   }
                 },
                 "authorized_workspaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "contents": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -13733,7 +13992,8 @@
           "student": {
             "required": [
               "id",
-              "enrolled"
+              "enrolled",
+              "muted"
             ],
             "properties": {
               "id": {
@@ -13759,6 +14019,15 @@
               },
               "last_logged_in": {
                 "type": "string"
+              },
+              "muted": {
+                "type": "boolean"
+              },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "created_by": {
                 "type": "string"
@@ -13920,6 +14189,12 @@
                     "type": "string"
                   }
                 },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
                 "created_by": {
                   "type": "string"
                 },
@@ -13965,6 +14240,49 @@
                 }
               }
             }
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "moderated": {
+                  "type": "boolean"
+                },
+                "flags": {
+                  "type": "integer"
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "school": {
+                  "type": "string"
+                },
+                "student": {
+                  "type": "string"
+                },
+                "ReportReason": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -13986,6 +14304,12 @@
             }
           },
           "mentors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contents": {
             "type": "array",
             "items": {
               "type": "string"
@@ -14054,6 +14378,12 @@
                 }
               },
               "authorized_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contents": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -14197,6 +14527,12 @@
                   "type": "string"
                 }
               },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "created_by": {
                 "type": "string"
               },
@@ -14210,7 +14546,8 @@
             "items": {
               "required": [
                 "id",
-                "enrolled"
+                "enrolled",
+                "muted"
               ],
               "properties": {
                 "id": {
@@ -14236,6 +14573,15 @@
                 },
                 "last_logged_in": {
                   "type": "string"
+                },
+                "muted": {
+                  "type": "boolean"
+                },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "created_by": {
                   "type": "string"
@@ -14499,7 +14845,8 @@
       "Student": {
         "required": [
           "id",
-          "enrolled"
+          "enrolled",
+          "muted"
         ],
         "properties": {
           "id": {
@@ -14557,6 +14904,12 @@
                 }
               },
               "authorized_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contents": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -14626,12 +14979,60 @@
           "last_logged_in": {
             "type": "string",
             "format": "date-time"
+          },
+          "muted": {
+            "type": "boolean",
+            "default": false
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "moderated": {
+                  "type": "boolean"
+                },
+                "flags": {
+                  "type": "integer"
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "school": {
+                  "type": "string"
+                },
+                "student": {
+                  "type": "string"
+                },
+                "ReportReason": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
       "NewStudent": {
         "required": [
-          "enrolled"
+          "enrolled",
+          "muted"
         ],
         "properties": {
           "name": {
@@ -14656,6 +15057,16 @@
           "last_logged_in": {
             "type": "string",
             "format": "date-time"
+          },
+          "muted": {
+            "type": "boolean",
+            "default": false
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "created_by": {
             "type": "string"
@@ -15297,6 +15708,9 @@
     },
     {
       "name": "Classroom"
+    },
+    {
+      "name": "Content"
     },
     {
       "name": "Email"

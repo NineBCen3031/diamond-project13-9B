@@ -573,6 +573,12 @@
                   "type": "string"
                 }
               },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "created_by": {
                 "type": "string"
               },
@@ -586,7 +592,8 @@
             "items": {
               "required": [
                 "id",
-                "enrolled"
+                "enrolled",
+                "muted"
               ],
               "properties": {
                 "id": {
@@ -612,6 +619,15 @@
                 },
                 "last_logged_in": {
                   "type": "string"
+                },
+                "muted": {
+                  "type": "boolean"
+                },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "created_by": {
                   "type": "string"

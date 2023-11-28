@@ -21,6 +21,7 @@ import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import Moderation from './views/Moderation/Moderation';
 
+
 const App = () => {
   return (
     <div>
