@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
-import {getClassroom, getMentor, updateStudent } from '../../Utils/requests';
+import {getClassroom, getMentor, updateStudent, updateContent } from '../../Utils/requests';
 import studentComponent from "../Student/Student";
 
 
@@ -77,30 +77,33 @@ export default function ModerationPage() {
     };
 
     const handleModerateContent = async (contentId) => {
-        try{
-            //Fetching the classroom details for obtain the content within gallery page.
-            const updatedDetails = await getClassroom(selectedOption);
-            setClassroomDetails(updatedDetails);
-
-            const contentToModerate = updatedDetails.contents.find(
-                (content) => content.id === contentId
-            );
-
-            //trying to update moderation status
-            if(contentToModerate){
-                const updatedContent = {
-                    ...contentToModerate,
-                    moderated: !contentToModerate.moderated,
-                };
-                //call to the API to update the moderated status
-                //updateContent(contentId, updatedContent);
+        try {
+            if (!classroomDetails || !classroomDetails.data || !classroomDetails.data.contents) {
+                return;
             }
-        }
 
-        catch(error){
-            console.error('Error moderating content:', error);
+            const updatedContents = classroomDetails.data.contents.map((content) => {
+                if (content.id === contentId) {
+                    const moderated = content.moderated === null ? false : !content.moderated;
+                    const updatedContent = { ...content, moderated };
+
+                    // Update content via the API for Strapi on the backend.
+                    updateContent(contentId, updatedContent)
+                        .then(() => console.log('Content updated successfully'))
+                        .catch((error) => console.log('Failed to update content:', error));
+
+                    return updatedContent;
+                }
+                return content;
+            });
+
+            // Update the state with the new content data for the button refresh.
+            setClassroomDetails({ data: { ...classroomDetails.data, contents: updatedContents } });
+        } catch (error) {
+            console.error('Error updating content:', error);
         }
-    }
+    };
+
 
     return (
         <div>
@@ -146,11 +149,11 @@ export default function ModerationPage() {
                         ) : (
                             <p>No students found for this classroom.</p>
                         )}
-                    <h4>Gallery Contents:</h4>
-                    {console.log(classroomDetails.contents)};
-                    {classroomDetails.contents && classroomDetails.contents.length > 0 ? (
-                        <u1>
-                            {classroomDetails.contents.map((content) => (
+                    <h2>Gallery Contents:</h2>
+                    {console.log("THIS vvvvvvv", classroomDetails["data"].contents)};
+                    {classroomDetails["data"].contents && classroomDetails["data"].contents.length > 0 ? (
+                        <ul>                                                           {/*This integer determines the threshold for content, min*/}
+                            {classroomDetails["data"].contents.filter(content => content.flags === 1).map((content) => (
                                 <li key = {content.id}>
                                     {content.description} - Flags: {content.flags}
                                     <button onClick={() => handleModerateContent(content.id)}>
@@ -158,7 +161,7 @@ export default function ModerationPage() {
                                     </button>
                                 </li>
                             ))}
-                        </u1>
+                        </ul>
                     ) : (
                         <p>No Gallery content found for this classroom.</p>
                     )}

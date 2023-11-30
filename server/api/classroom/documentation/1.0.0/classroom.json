@@ -1036,7 +1036,8 @@
             "type": "array",
             "items": {
               "required": [
-                "id"
+                "id",
+                "moderated"
               ],
               "properties": {
                 "id": {

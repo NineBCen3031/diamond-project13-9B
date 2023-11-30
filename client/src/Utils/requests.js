@@ -189,6 +189,15 @@ export const updateStudent = async (id, student) =>
     error: 'Failed to update student.',
   });
 
+export const updateContent = async (id, moderated) =>
+    makeRequest({
+        method: PUT,
+        path: `${server}/contents/${id}`,
+        data: moderated,
+        auth: true,
+        error: 'Failed to update Contents Moderation',
+    });
+
 export const getUnits = async (id) =>
   makeRequest({
     method: GET,
