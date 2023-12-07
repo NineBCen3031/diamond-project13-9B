@@ -573,6 +573,12 @@
                   "type": "string"
                 }
               },
+              "contents": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "created_by": {
                 "type": "string"
               },
@@ -612,6 +618,15 @@
                 },
                 "last_logged_in": {
                   "type": "string"
+                },
+                "Muted": {
+                  "type": "boolean"
+                },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "created_by": {
                   "type": "string"

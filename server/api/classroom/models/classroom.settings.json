@@ -46,6 +46,10 @@
       "via": "classroom",
       "private": true,
       "collection": "authorized-workspace"
+    },
+    "contents": {
+      "via": "classroom",
+      "collection": "content"
     }
   }
 }

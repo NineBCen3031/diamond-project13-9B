@@ -20,6 +20,7 @@ import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import Moderation from './views/Moderation/Moderation';
+import ModerationPageHistory from './views/Moderation/ModerationHistory';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/replay/:saveID' element={<Replay />} />
         <Route path='/sandbox' element={<BlocklyPage isSandbox={true} />} />
         <Route path='/moderation' element={<Moderation />}  />
+        <Route path='/moderationhistory' element={<ModerationPageHistory />}  />
         <Route
           path='/report'
           element={

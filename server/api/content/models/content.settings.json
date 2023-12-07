@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contents",
+  "info": {
+    "name": "content",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "description": {
+      "type": "string"
+    },
+    "moderated": {
+      "type": "boolean"
+    },
+    "flags": {
+      "type": "integer"
+    },
+    "classroom": {
+      "model": "classroom",
+      "via": "contents"
+    },
+    "school": {
+      "model": "school",
+      "via": "contents"
+    },
+    "student": {
+      "model": "student",
+      "via": "contents"
+    },
+    "ReportReason": {
+      "type": "string"
+    }
+  }
+}
