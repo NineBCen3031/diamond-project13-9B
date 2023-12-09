@@ -14,6 +14,8 @@ export default function ModerationPage() {
 
     const [classroomDetails, setClassroomDetails] = useState({ data: { students: [] } });
 
+
+    //This useEffects function is here to populate the moderation page with data depending on the user that's signed in instantly once they click to go to the page.
     useEffect(() => {
         getData();
     }, []);
@@ -23,11 +25,10 @@ export default function ModerationPage() {
     async function getData() {
         try {
             const userData = await getMentor();
-            console.log(userData);
             setUser(userData);
             setData(userData.data.classrooms);
-            console.log(userData.data.classrooms);
 
+            //Get the data of the users specific classrooms, so that they are only allowed to moderate their classes and not others.
             const classIds = userData.data.classrooms.map((classroom) => classroom.id);
             setClassIds(classIds);
         }
@@ -36,6 +37,7 @@ export default function ModerationPage() {
         }
     }
 
+    //This function is for the drop down menu to allow for the change in classroom data depending on which class the user has selected.
     async function handleClassroomChange(classId) {
         try {
             const details = await getClassroom(classId);
@@ -46,6 +48,7 @@ export default function ModerationPage() {
         }
     }
 
+    //This function handles the mute buttons next to the student roster list that's populated in the moderation page once a user selects a classroom, so that a teacher can prevent any and all students from being able to post content to the gallery page.
     const handleToggleMute = async (studentId) => {
         try {
             setClassroomDetails((prevDetails) => {
@@ -53,12 +56,13 @@ export default function ModerationPage() {
                     return prevDetails;
                 }
 
+                //iterator to find the correct student via their IDs to toggle the muted boolean.
                 const updatedStudents = prevDetails.data.students.map((student) => {
                     if (student.id === studentId) {
                         const muted = student.muted === null ? false : !student.muted;
                         const updatedStudent = { ...student, muted };
 
-                        // Update the student on the server
+                        // Update the student data on the server
                         updateStudent(student.id, updatedStudent)
                             .then(() => console.log('Student updated successfully'))
                             .catch((error) => console.log('Failed to update student:', error));
@@ -76,12 +80,14 @@ export default function ModerationPage() {
         }
     };
 
+    //This function handles the moderate button for the content that get posted to the individual classrooms, and allows for a teacher to reject/hide the post if they toggle the boolean. Yet the only way that happens is if the content has been flag by a user to then get sent to the moderation page.
     const handleModerateContent = async (contentId) => {
         try {
             if (!classroomDetails || !classroomDetails.data || !classroomDetails.data.contents) {
                 return;
             }
 
+            //iterator to find the correct content via its IDs to toggle the moderated boolean, and if it's been set to null, which it shouldn't be, but if it is then set it to false before attempting to toggle.
             const updatedContents = classroomDetails.data.contents.map((content) => {
                 if (content.id === contentId) {
                     const moderated = content.moderated === null ? false : !content.moderated;
@@ -134,10 +140,10 @@ export default function ModerationPage() {
                 <div>
                     <h2>Classroom Roster</h2>
                     <h3>Students:</h3>
-                    {console.log(classroomDetails)};
+
                     {(classroomDetails && classroomDetails.data && classroomDetails.data.students) ? (
 
-                    <ul>
+                    <ul> {/*iterate through the list of student and print them out with a button the calls the handleToggleMute function.*/}
                         {classroomDetails.data.students.map((student) => (
                             <li key ={student.id}>{student.name}
                                 <button onClick={() => handleToggleMute(student.id)}>
@@ -150,10 +156,10 @@ export default function ModerationPage() {
                             <p>No students found for this classroom.</p>
                         )}
                     <h2>Gallery Contents:</h2>
-                    {console.log("THIS vvvvvvv", classroomDetails["data"].contents)};
+
                     {classroomDetails["data"].contents && classroomDetails["data"].contents.length > 0 ? (
-                        <ul>                                                           {/*This integer determines the threshold for content, min*/}
-                            {classroomDetails["data"].contents.filter(content => content.flags === 1).map((content) => (
+                        <ul>                                                           {/*This integer determines the threshold for content, and next to it says that if the content hasn't been moderated then print it out to the moderation page. Yet if the content is moderated then don't print it out to the moderation page but instead the moderation history as it already been handled.*/}
+                            {classroomDetails["data"].contents.filter(content => content.flags === 1 && content.moderated === false).map((content) => (
                                 <li key = {content.id}>
                                     {content.description} - Flags: {content.flags}
                                     <button onClick={() => handleModerateContent(content.id)}>
