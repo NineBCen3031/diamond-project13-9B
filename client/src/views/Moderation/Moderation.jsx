@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
-import {getClassroom, getMentor, updateStudent, updateContent } from '../../Utils/requests';
+import {getClassroom, getMentor, updateStudent, updateContent, updateContentFlags} from '../../Utils/requests';
 import studentComponent from "../Student/Student";
 
 
@@ -79,6 +79,36 @@ export default function ModerationPage() {
             console.error('Error updating student:', error);
         }
     };
+
+    const handleSafeContent = async (contentId) => {
+        try {
+            setClassroomDetails((prevDetails) => {
+                if (!classroomDetails || !classroomDetails.data || !classroomDetails.data.contents) {
+                    return prevDetails;
+                }
+
+                const updatedContents = classroomDetails.data.contents.map((content) => {
+                    let updatedContent = content;
+
+                    if (content.id === contentId) {
+                        const updateContent = { ...content, flags: 0 };
+
+                        updateContentFlags(contentId, updateContent)
+                            .then(() => console.log('Content flag reset successfully'))
+                            .catch((error) => console.log('Failed to reset content flag:', error));
+
+                        updatedContent = updateContent;  // Update the reference of updatedContent
+                    }
+                    return updatedContent;
+                });
+
+                return { data: { ...prevDetails.data, contents: updatedContents } };
+            });
+        } catch (error) {
+            console.error('Error updating content flags:', error);
+        }
+    };
+
 
     //This function handles the moderate button for the content that get posted to the individual classrooms, and allows for a teacher to reject/hide the post if they toggle the boolean. Yet the only way that happens is if the content has been flag by a user to then get sent to the moderation page.
     const handleModerateContent = async (contentId) => {
@@ -164,6 +194,9 @@ export default function ModerationPage() {
                                     {content.description} - Flags: {content.flags}
                                     <button onClick={() => handleModerateContent(content.id)}>
                                         {content.moderated ? 'Unmoderate' : 'Moderate'}
+                                    </button>
+                                    <button onClick={() => handleSafeContent(content.id)}>
+                                        Safe
                                     </button>
                                 </li>
                             ))}
