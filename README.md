@@ -48,7 +48,25 @@ Can report posts in the gallery. Reported posts will be sent for review when the
   ### Change permissions in Strapi
   `localhost:1337/admin` Will allow you to access the Strapi back-end. 
 
+  Navigate to the Classroom Manager's permissions.
+  ![classroom mangaer](https://github.com/NineBCen3031/diamond-project13-9B/assets/93298664/c97199c3-e339-48e4-a8f0-565e3fd11486)
+
+   <br/>
+
+   Enable all content permissions.
+  ![classroom manger 2](https://github.com/NineBCen3031/diamond-project13-9B/assets/93298664/2b1e5035-e64d-40fa-926e-c5a8f31fb6ba)
+
+  
+
   ### Add content as needed
+  Navigate to the contents tab and click add new contents.
+  ![creaitng content1](https://github.com/NineBCen3031/diamond-project13-9B/assets/93298664/d300c301-c688-4f84-8468-2a6bcb7f5a72)
+
+  <br/>
+
+  Fill in all required fields for a piece of content, make sure to specify the classroom the content is for.
+  ![creating content](https://github.com/NineBCen3031/diamond-project13-9B/assets/93298664/c75fbdd2-0d41-4670-a848-f0a9759abc16)
+
 
   ### Done!
   `localhost:3000` Will allow you to access the CodeSparks program. 
