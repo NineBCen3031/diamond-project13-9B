@@ -43,6 +43,16 @@ Can report posts in the gallery. Reported posts will be sent for review when the
 
 # Running the Project
 
+  ### Set-up the required programs as described in the CodeSparks repo, (Node, Docker, Strappi)
 
+  ### Change permissions in Strapi
+  `localhost:1337/admin` Will allow you to access the Strapi back-end. 
+
+  ### Add content as needed
+
+  ### Done!
+  `localhost:3000` Will allow you to access the CodeSparks program. 
+  Login using Username: "teacher" Password: "easypassword"
+  
 
 
