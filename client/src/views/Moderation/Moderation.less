@@ -4,23 +4,10 @@
 #moderation-wrapper {
   margin: 4vh auto 4vh auto;
   display: inline-block;
+  text-align: center;
   
 }
 
-#moderation-title {
-  background-color: #colors[secondary];
-  border-radius: 80px;
-  width: 25%;
-  min-height: 10%;
-  color: #colors[text-secondary];
-  font-size: 1.7em;
-  font-weight: bold;
-  position: relative;
-  top: 27px;
-  left: 20px;
-  line-height: 50px;
-  text-align: center;
-}
 
 #bug-report-form {
   width: 400px;
@@ -54,6 +41,22 @@
       background-color: #colors[quinary];
     }
   }
+}
+
+
+.moderation-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 25%;
+  min-height: 10%;
+  color: #colors[text-secondary];
+  font-size: 1.7em;
+  font-weight: bold;
+  position: relative;
+  top: 27px;
+  left: 20px;
+  line-height: 50px;
+  text-align: center;
 }
 
 .approveButton{
@@ -125,7 +128,8 @@
 }
 
 .ContentBox{
-  top: 1vh;
+  right: -9vw;
+  top: 4vh;
   margin: 1vw;
   display: grid;
   grid-template-columns: auto auto auto;
@@ -230,6 +234,8 @@
 
 .ClassroomBox{
   margin: 1vw;
+  right: -9vw;
+  top: 4vh;
   //display: grid;
   //grid-template-columns: auto auto auto;
  
@@ -261,8 +267,9 @@
 
   position: absolute;
   line-height: 40px;
-  top: -15.5vh;
-  right: -7vw;
+  top: 10.5vh;
+  right: 1.5vw;
+
   text-align: center;
 }
 
@@ -322,7 +329,8 @@
 .MuteButton{
 
   margin: 0.1vh;
-  width: 4vw;
+  width: 4.5vw;
+
   height: 5vh;
   
   font-weight: bold;
@@ -335,4 +343,29 @@
 
 .MuteButton:hover{
   transform: scale(1.05);
+}
+
+.HistoryToggle{
+  margin: 2vh;
+  padding: 0.5vw;
+  border-radius: 10px;
+  width: 16vw;
+  height: 8vh;
+  position: relative;
+  
+  justify-content: center;
+  text-align: center;
+  font-size: 1.2em;
+
+  background: #colors[secondary];
+  color: #colors[text-secondary];
+  border: none;
+  border-color: #colors[secondary];
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+  
+}
+
+.HistoryToggle:hover{
+  transform: scale(1.03);
 }

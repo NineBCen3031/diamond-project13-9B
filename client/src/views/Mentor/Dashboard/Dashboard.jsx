@@ -40,6 +40,9 @@ export default function Dashboard() {
     <div className='container nav-padding'>
       <NavBar />
       <div id='main-header'>Welcome {value.name}</div>
+      <button class="ModerationPageButton" onClick={() => navigate(`/moderation`)}>
+                    View Moderation Page
+      </button>
       <MentorSubHeader title={'Your Classrooms'}></MentorSubHeader>
       <div id='classrooms-container'>
         <div id='dashboard-card-container'>
@@ -64,14 +67,7 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
-        <div id='moderation-button'>
-          <button onClick={() => navigate(`/moderation`)}>
-                    Moderation
-                  </button>
-                  <button onClick={() => navigate(`/moderationhistory`)}>
-                    Moderation History
-                  </button>
-        </div>
+
         
       </div>
     </div>
