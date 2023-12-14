@@ -39,12 +39,14 @@
   background-color: #colors[secondary];
   border-radius: 80px;
   width: 25%;
-  min-height: 8%;
+
+  min-height: 10%;
   color: #colors[text-secondary];
-  font-size: 1.4em;
+  font-size: 1.7em;
   font-weight: bold;
   position: relative;
-  top: 20px;
+  top: 27px;
+
   left: 20px;
   line-height: 50px;
   text-align: center;
@@ -57,7 +59,7 @@
   justify-content: left;
   background: #colors[senary];
   padding: 0.5vw;
-  width: 80vw;
+  width: 75vw;
   position: float;
   text-align: center;
   border-radius: 30px;
@@ -66,15 +68,19 @@
 
 #classroom-box{
   margin: 1vw;
+
+  right: -9vw;
+  top: 4vh;
   //display: grid;
   //grid-template-columns: auto auto auto;
  
-  background: #e3e3e3;
+  background: #add8e6;
   padding: 0.5vw;
  
-  width: 90vw;
+  width: 78vw;
   min-height: 30vh;
-  position: absolute;
+  position: relative;
+
   text-align: center;
   justify-content: center;
   border-radius: 10px;
@@ -82,7 +88,6 @@
 
  
   color: #colors[text-primary];
-  
   
 }
 
@@ -94,11 +99,11 @@
   color: #colors[text-secondary];
   font-size: 1.3em;
   font-weight: bold;
-
   position: absolute;
   line-height: 40px;
-  top: -15.5vh;
-  right: -7vw;
+  top: 10.5vh;
+  right: 1.5vw;
+
   text-align: center;
 }
 
@@ -113,4 +118,51 @@
   position:relative;
   bottom:1vh;
   border-color: white;
+
+}
+
+.HistoryToggle{
+  margin: 2vh;
+  padding: 0.5vw;
+  border-radius: 10px;
+  width: 16vw;
+  height: 8vh;
+  position: relative;
+  
+  justify-content: center;
+  text-align: center;
+  font-size: 1.2em;
+
+  background: #colors[secondary];
+  color: #colors[text-secondary];
+  border: none;
+  border-color: #colors[secondary];
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+  
+}
+
+.HistoryToggle:hover{
+  transform: scale(1.03);
+}
+
+.RosterTitle
+{
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+.approved
+{
+  color: darkgreen;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.rejected
+{
+  color: darkred;
+  font-size: 1.2em;
+  font-weight: bold;
+
 }

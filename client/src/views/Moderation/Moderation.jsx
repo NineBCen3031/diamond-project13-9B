@@ -2,9 +2,11 @@ import React, { Component, useState, useEffect } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
 import Thumbnail from '../../assets/casmm_logo.png'
 import './Moderation.less';
-import {getClassroom, getMentor, updateContent, updateStudent } from '../../Utils/requests';
+import {getClassroom, getMentor, updateStudent, updateContent, updateContentFlags} from '../../Utils/requests';
+import { useNavigate } from 'react-router-dom';
 
-const Dropdown = () => {
+const ModerationPage = () => {
+
     const [user, setUser] = useState({});
     const [data, setData] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
@@ -13,19 +15,42 @@ const Dropdown = () => {
 
     const [classroomDetails, setClassroomDetails] = useState({ data: { students: [] } });
 
+    const [selectedContent, setSelectedContent] = useState(null);
+
+    const navigate = useNavigate();
+    
+
     useEffect(() => {
         getData();
     }, []);
+    
+
+    const handleContentClick = async (contentId) => {
+    
+        console.log(classroomDetails.data.contents);
+        
+         
+        const selectedContent = classroomDetails["data"].contents.find(content => content.id === contentId);
+        if(selectedContent!== undefined)
+            {setSelectedContent(selectedContent);}
+
+        console.log(selectedContent);
+
+    }
+
+    const handleModerationAction = (action) => {
+        setSelectedContent(null);
+    }
 
 
     //This is an async function due to mentor files functions.
     async function getData() {
         try {
             const userData = await getMentor();
-            console.log(userData);
+            //   console.log(userData);
             setUser(userData);
             setData(userData.data.classrooms);
-            console.log(userData.data.classrooms);
+           // console.log(userData.data.classrooms);
 
             const classIds = userData.data.classrooms.map((classroom) => classroom.id);
             setClassIds(classIds);
@@ -75,37 +100,87 @@ const Dropdown = () => {
         }
     };
 
+    const handleSafeContent = async (contentId) => {
+        try {
+            setClassroomDetails((prevDetails) => {
+                if (!classroomDetails || !classroomDetails.data || !classroomDetails.data.contents) {
+                    return prevDetails;
+                }
+
+                const updatedContents = classroomDetails.data.contents.map((content) => {
+                    let updatedContent = content;
+
+                    if (content.id === contentId) {
+                        const updateContent = { ...content, flags: 0 };
+
+                        updateContentFlags(contentId, updateContent)
+                            .then(() => console.log('Content flag reset successfully'))
+                            .catch((error) => console.log('Failed to reset content flag:', error));
+
+                        updatedContent = updateContent;  // Update the reference of updatedContent
+                    }
+                    return updatedContent;
+                });
+
+                return { data: { ...prevDetails.data, contents: updatedContents } };
+            });
+        } catch (error) {
+            console.error('Error updating content flags:', error);
+        }
+
+        setSelectedContent(null);
+
+    };
+  
     const handleModerateContent = async (contentId) => {
-        try{
-            //Fetching the classroom details for obtain the content within gallery page.
-            const updatedDetails = await getClassroom(selectedOption);
-            setClassroomDetails(updatedDetails);
-
-            const contentToModerate = updatedDetails.contents.find(
-                (content) => content.id === contentId
-            );
-
-            //trying to update moderation status
-            if(contentToModerate){
-                const updatedContent = {
-                    ...contentToModerate,
-                    moderated: !contentToModerate.moderated,
-                };
-                //call to the API to update the moderated status
-                //updateContent(contentId, updatedContent);
+        try {
+            if (!classroomDetails || !classroomDetails.data || !classroomDetails.data.contents) {
+                return;
             }
+
+            //iterator to find the correct content via its IDs to toggle the moderated boolean, and if it's been set to null, which it shouldn't be, but if it is then set it to false before attempting to toggle.
+            const updatedContents = classroomDetails.data.contents.map((content) => {
+                if (content.id === contentId) {
+                    const moderated = content.moderated === null ? false : !content.moderated;
+                    const updatedContent = { ...content, moderated };
+
+                    // Update content via the API for Strapi on the backend.
+                    updateContent(contentId, updatedContent)
+                        .then(() => console.log('Content updated successfully'))
+                        .catch((error) => console.log('Failed to update content:', error));
+
+                    return updatedContent;
+                }
+                return content;
+            });
+
+            // Update the state with the new content data for the button refresh.
+            setClassroomDetails({ data: { ...classroomDetails.data, contents: updatedContents } });
+        } catch (error) {
+            console.error('Error updating content:', error);
         }
 
-        catch(error){
-            console.error('Error moderating content:', error);
-        }
-    }
+        setSelectedContent(null);
+
+    };
 
     return (
-        <div class="ClassroomBox">
+
+            <div className='container nav-padding'>
+                <NavBar />
+        
+                <div class="moderation-title">Moderation Page</div> 
+                
+                <button class="HistoryToggle" onClick={() => navigate(`/moderationhistory`)}>
+                    View Moderation History
+                </button>
+        
+                <br></br>
+        
+        <div class="moderation-wrapper">
 
             <div class = "ClassDropdown">
-            Current Classroom:
+            Current Classroom:  
             <select class = "Selection"
 
                 value={selectedOption}
@@ -123,19 +198,10 @@ const Dropdown = () => {
                 ))}
             </select>
             </div>
-
-            {       
-            /*
-            <div>
-                {selectedOption && (
-                    <p>You selected: {selectedOption}</p>
-                )}
-            </div>
-            */
-            }
             
             {classroomDetails !== null && (
                 <div>
+                    <div class="ClassroomBox">
 
                     <div class="RosterTitle"> Classroom Roster </div>
                  
@@ -159,153 +225,42 @@ const Dropdown = () => {
                         ) : (
                             <p>No students found for this classroom.</p>
                         )}
-
-                    {
-                    /*
-                    <h4>Gallery Contents:</h4>
-                    {console.log(classroomDetails.contents)};
-                    {classroomDetails.contents && classroomDetails.contents.length > 0 ? (
-                        <u1>
-                            {classroomDetails.contents.map((content) => (
-                                <li key = {content.id}>
-                                    {content.description} - Flags: {content.flags}
-                                    <button onClick={() => handleModerateContent(content.id)}>
-                                        {content.moderated ? 'Unmoderate' : 'Moderate'}
-                                    </button>
-                                </li>
-                            ))}
-                        </u1>
-                    ) : (
-                        <p>No Gallery content found for this classroom.</p>
-                    )}
-                    */
-                    }   
-
-                </div>
-            )}
-        </div>
-    );
-}
-
-class ModerationPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            contentData: [
-                { id: 1, title: 'Content 1', description: 'This is the first content item', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content","User 8 - Inappropriate content", "User 9 - Plagiarism", "User 10 - Hate speech", "User 11 - Inappropriate content",  ], flags: 11},
-                { id: 2, title: 'Content 2', description: 'This is the second content item', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content","User 8 - Inappropriate content", "User 9 - Plagiarism", "User 10 - Hate speech", "User 11 - Inappropriate content",  ], flags: 11},
-                { id: 3, title: 'Content 3', description: 'This is the third content item', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 4, title: 'Content 4', description: 'Report Details',
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 5, title: 'Content 5', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 6, title: 'Content 6', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 7, title: 'Content 7', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 8, title: 'Content 8', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 9, title: 'Content 9', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech", "User 4 - Inappropriate content", "User 5 - Plagiarism", "User 6 - Hate speech", "User 7 - Inappropriate content", ], flags: 7 },
-                { id: 10, title: 'Content 10', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech"], flags: 3 },
-                { id: 11, title: 'Content 11', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech"], flags: 3 },
-                { id: 12, title: 'Content 12', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech"], flags: 3 },
-                { id: 13, title: 'Content 13', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech"], flags: 3 },
-                { id: 14, title: 'Content 14', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech"], flags: 3 },
-                { id: 15, title: 'Content 15', description: 'Report Details', 
-                reports: ["User 1 - Inappropriate content", "User 2 - Plagiarism", "User 3 - Hate speech"], flags: 3 },
-                
-                
-                // Add more content items here
-            ],
-            showContent: false,
-            selectedContent: null,
-        };
-
-
-    }
-
-    handleContentClick = (contentId) => {
-        const selectedContent = this.state.contentData.find(content => content.id === contentId);
-        this.setState({ selectedContent });
-    }
-
-    handleModerationAction = (action) => {
-        // Perform your moderation action here, e.g., hide, delete, or approve content
-        // Update the contentData and UI accordingly
-
-        // Example: Removing the content from the list
-        const updatedContentData = this.state.contentData.filter(content => content.id !== this.state.selectedContent.id);
-        this.setState({
-            contentData: updatedContentData,
-            selectedContent: null,
-        });
-    }
-
-    render() {
-        const { contentData, selectedContent } = this.state;
-
-        
-
-        return (
-
-            
-            <div className='container nav-padding'>
-                <NavBar />
-
-                <div id='moderation-title'>Moderation Page</div> 
-                
-                <div id='moderation-wrapper'>
-
-                <br></br>
+                    </div>
                     
+                   
+                    <div class="ContentBox">
 
-                {/* Content List */}
+                    {console.log(classroomDetails.contents)}
+                    {classroomDetails["data"].contents && classroomDetails["data"].contents.length > 0 ? (
+                        <ul class="ReportGrid">                                                           {/*This integer determines the threshold for content, and next to it says that if the content hasn't been moderated then print it out to the moderation page. Yet if the content is moderated then don't print it out to the moderation page but instead the moderation history as it already been handled.*/}
+                            {classroomDetails["data"].contents.filter(content => content.flags === 1 && content.moderated === false).map((content) => (
+                                <li key = {content.id} onClick={() => handleContentClick(content.id)}>
+                                    <div class="ItemBox">
 
-                 <Dropdown/>
+                                    <div class = "ItemText">
+                                    {content.description}
+                                    </div>
 
-             
-                
-                <div class = "ContentBox">
-                    
-                <ol class = "ReportGrid">
-                    {contentData.map(content => (
-
-                       
-
-                        <li key={content.id} onClick={() => this.handleContentClick(content.id)}>
-                            <div class = "ItemBox">
-                                
-
-                                <div class = "ItemText">
-                                {content.title}
-                                </div>
-
-                                <img src = {Thumbnail} class = "postThumbnail" alt ="Thumbnail" />
+                                    <img src = {Thumbnail} class = "postThumbnail" alt ="Thumbnail" />
                         
-                                <div class = "FlagDisplay">
-                                {content.flags} Flags
-                                </div>
-                            
-                            </div>
-                        </li>
+                                    <div class = "FlagDisplay">
+                                    {content.flags} Flags
+                                    </div>
 
-                    ))}
-                </ol>             
-            
-            </div>
+                                    </div>
+                                </li>
 
-            </div>
-        
-            {selectedContent && (
+                                
+                            ))}
+                        </ul>
+                    ) : (
+                        <h>No reported content found for this classroom.</h>
+                    )}
+                    
+                    </div>
+
+                    {selectedContent && (
+
                     <div>
                     <div class = "overlay"> </div>
                     <div class = "ReportBox">
@@ -315,29 +270,28 @@ class ModerationPage extends Component {
                         <div>
                         <div class= "FlagDisplay2">{selectedContent.flags} Flags</div>
                         </div>
-
-                        <p>Title: {selectedContent.title}</p>
+                        <p>Title: {selectedContent.description}</p>
                         <p>Description: {selectedContent.description}</p>
 
                             <div>
-                            {selectedContent.reports.map(reportText => <p><div class = "reportsDisplay">{reportText}</div></p>)}
+                            {selectedContent.ReportReason}
                             </div>
 
-                        <button onClick={() => this.handleModerationAction('approve')} class = "approveButton" >Approve Post</button>
-                        <button onClick={() => this.handleModerationAction('reject')} class = "rejectButton" >Reject Post</button>
+                        <button onClick={() => handleSafeContent(selectedContent.id)} class = "approveButton" >Approve Post</button>
+                        <button onClick={() => handleModerateContent(selectedContent.id)} class = "rejectButton" >Reject Post</button>
+
                         
 
                     </div>
                     </div>
-                )}
+                    )}
+                     
 
-                <br></br>
-                <br></br>
-
-            </div>
-            
-        );
-    }
+                </div>
+            )}
+        </div>
+        </div>
+    );
 }
 
 export default ModerationPage;

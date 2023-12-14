@@ -3,6 +3,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import MentorSubHeader from '../../components/MentorSubHeader/MentorSubHeader';
 import './ModerationHistory.less';
 import {getClassroom, getMentor } from '../../Utils/requests';
+import { useNavigate } from 'react-router-dom';
 
 export default function ModerationPageHistory() {
     
@@ -13,6 +14,8 @@ export default function ModerationPageHistory() {
     const [classIds, setClassIds] = useState({});
 
     const [classroomDetails, setClassroomDetails] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getData();
@@ -50,9 +53,12 @@ export default function ModerationPageHistory() {
             <div className='container nav-padding'>
                 <NavBar />
                 <div id='moderation-title'>Moderation History</div> 
-                <div id='moderation-wrapper'></div>
+                <button class="HistoryToggle" onClick={() => navigate(`/moderation`)}>
+                    View Moderation Page
+                </button>
                 
-            <div id="classroom-box">  
+            {/*Dropdown allowing to chose which classroom to view*/}    
+   
                 <div id="class-dropdown">Select Classroom:
                     <select id='Selection1'
 
@@ -72,9 +78,11 @@ export default function ModerationPageHistory() {
                         ))}
                     </select>
             </div>
-            
+
+            <div id="classroom-box">  
+            <div class="RosterTitle"> Classroom History </div>
            
-           
+           {/*Checks that there is classroom data*/ }
             {classroomDetails !== null && (
                 <div>
                     {(classroomDetails.data) ? (
@@ -83,10 +91,12 @@ export default function ModerationPageHistory() {
                         {console.log(classroomDetails)}
                         {classroomDetails["data"].contents && classroomDetails["data"].contents.length > 0 ? (
                         <ul>                                                        
+                            {/*Prints out all the content in the classroom stating if it has been moderated or not. Otherwise states there is no content in the classroom.
+                            */}
                             {classroomDetails["data"].contents.filter(content => content.moderated === true).map((content) => (
                                 <li id ='content-box' key = {content.id}>
-                                    <h3>Content Description: {content.description}</h3>
-                                    <div>Status: Moderated</div>
+                                    <h3>{content.description}</h3>
+                                    <div class="rejected">Rejected Content</div>
                                     <div>Flags: {content.flags}</div>
                                     <div>Reason for Report: {content.ReportReason}</div>
                                     <div>Posted by 
@@ -101,9 +111,9 @@ export default function ModerationPageHistory() {
                             ))}
                             {classroomDetails["data"].contents.filter(content => content.moderated === false).map((content) => (
                                 <li id = 'content-box' key = {content.id}>
-                                    <h3>Content Description: {content.description}</h3>
+                                    <h3>{content.description}</h3>
                                     <div>
-                                    <div>Status: Not Moderated</div>
+                                    <div class="approved">Approved Content</div>
                                     <div>Flags: {content.flags}</div>
                                     <div>Reason for Report: {content.ReportReason}</div>
                                     <div>Posted by 
@@ -118,7 +128,7 @@ export default function ModerationPageHistory() {
                             
                         </ul>
                     ) : (
-                        <p>No Gallery content found for this classroom.</p>
+                        <p>No moderated content found for this classroom.</p>
                     )}
                         
                         
