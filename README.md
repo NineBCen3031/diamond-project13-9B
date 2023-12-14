@@ -27,7 +27,7 @@ Posts can be reported from the gallery. You will be prompted for a report reason
 ![reporting popup](https://github.com/NineBCen3031/diamond-project13-9B/assets/93298664/931ffb22-d720-4902-a198-5f8825b2b65a)
 
 
-## User Permissions
+## Users
 
 ### `Administrator` 
 Have access to all classroom moderation pages and reports.
@@ -43,7 +43,7 @@ Can report posts in the gallery. Reported posts will be sent for review when the
 
 # Running the Project
 
-  ### Set-up the required programs as described in the CodeSparks repo, (Node, Docker, Strappi)
+  ### Set-up the required programs as described in the CodeSparks repo, (Node, Docker, Strapi)
 
   ### Change permissions in Strapi
   `localhost:1337/admin` Will allow you to access the Strapi back-end. 
