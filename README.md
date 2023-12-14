@@ -71,6 +71,8 @@ Can report posts in the gallery. Reported posts will be sent for review when the
   ### Done!
   `localhost:3000` Will allow you to access the CodeSparks program. 
   Login using Username: "teacher" Password: "easypassword"
+
+  As a teacher you can view the moderation page from the Dashboard. You can manage reports and content from there.
   
 
 
